@@ -12,13 +12,15 @@ async function getBusStopData(askForStopCode) {
     const response = await fetch(apiRequest);
     const data = await response.json();
 
-    var nextBus = {};
+    var nextBus = [];
     
     for (i = 0; i < 5; i++) {
+        
         nextBus['Bus name'][i]=data[i].lineName;
         nextBus['Wait Time'][i]=data[i].timeToStation;
         nextBus['Destination'][i]=data[i].destionationName;
         nextBus['Route'][i]=data[i].towards;
+        //push new array
     }
     
     console.log(nextBus);
