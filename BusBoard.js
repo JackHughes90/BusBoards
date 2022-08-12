@@ -1,7 +1,7 @@
 const readline = require('readline-sync');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
-async function getBusStopData(stopCode) {
+async function getBusStopData(stopCode,stopName) {
     
     apiRequest = "https://api.tfl.gov.uk/StopPoint/"+stopCode+"/Arrivals"
     //apiRequest = "https://api.tfl.gov.uk/StopPoint/490008660N/Arrivals"
@@ -12,6 +12,8 @@ async function getBusStopData(stopCode) {
 
     // creates empty array for top 5 buses.
     var nextBus = [];
+
+    nextBus[0]=stopName;
     
     // finds first 5 entries on API and returns certain properties of the buses
     for (i = 0; i < 5; i++) {
@@ -48,8 +50,7 @@ async function findNearestStops(requestPostCode) {
     for(let i=0;i<2;i++){
     const busStop=radiusData.stopPoints[i].naptanId;
     const busStopName=radiusData.stopPoints[i].commonName;
-    console.log(busStopName);
-    getBusStopData(busStop);
+    getBusStopData(busStop,busStopName);
     }
 }
 
