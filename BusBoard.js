@@ -6,39 +6,27 @@ async function getBusStopData(askForStopCode) {
     stopCode = readline.prompt();
     // apiRequest = "https://api.tfl.gov.uk/StopPoint/"+stopCode+"/Arrivals"
     apiRequest = "https://api.tfl.gov.uk/StopPoint/490008660N/Arrivals"
-    //console.log(stopCode);
 
-    
+    // fetches API and creates "data" array to hold them in.
     const response = await fetch(apiRequest);
     const data = await response.json();
 
+    // creates empty array for top 5 buses.
     var nextBus = [];
     
+    // finds first 5 entries on API and returns certain properties of the buses
     for (i = 0; i < 5; i++) {
+        let busi = {
+            'busName': data[i].lineName,
+            'waitTime': data[i].timeToStation,
+            'destination': data[i].destionationName,
+            'route': data[i].towards
+        };
         
-        nextBus['Bus name'][i]=data[i].lineName;
-        nextBus['Wait Time'][i]=data[i].timeToStation;
-        nextBus['Destination'][i]=data[i].destionationName;
-        nextBus['Route'][i]=data[i].towards;
-        //push new array
+        nextBus.push(busi);
     }
     
     console.log(nextBus);
-    
-
-
-    // arrayOfBus[0].lineName
-    
-    /*
-    arrayOfBus = fetch(apiRequest)
-    .then(response => response.json())
-    .then(body => console.log(body));
-
-    //console.log(arrayOfBus);
-
-    */
 }
 
 getBusStopData("Hello, bus stop code would you like to inspect?");
-
-// person.name
