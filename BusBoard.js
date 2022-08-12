@@ -56,16 +56,23 @@ async function findNearestStops(requestPostCode) {
 }
 
 // a function to guide the user to the nearest bus stop.
-async function journeyPlanner() {
+async function journeyPlanner(postCode, busStopCode) {
 
     // request API
     const plannerResponse = await fetch('https://api.tfl.gov.uk/Journey/JourneyResults/n129hb/to/n129hj');
     const plannerData = await plannerResponse.json();
 
-    let instruction1 = plannerData.journeys[0].legs[0].instruction.steps[0].description;
+    for (i = 0; i < plannerData.journeys[0].legs[0].instruction.steps.length; i++) {
 
-    console.log(instruction1);
-
+        // for each step, grab descriptionHeading and description.
+        console.log(plannerData.journeys[0].legs[0].instruction.steps[i].descriptionHeading
+             + " " + plannerData.journeys[0].legs[0].instruction.steps[i].description + ";");
+        
+        // move onto next step.
+        
+    }
+    // "you have arrived"
+    console.log("You have arrived!");
 }
 
 
