@@ -4,23 +4,18 @@ const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fet
 async function getBusStopData(stopCode, stopName) {
 
     apiRequest = `https://api.tfl.gov.uk/StopPoint/${stopCode}/Arrivals`
-    //apiRequest = "https://api.tfl.gov.uk/StopPoint/490008660N/Arrivals"
-
+    
     // fetches API and creates "data" array to hold them in.
     const busStopResponse = await fetch(apiRequest);
     const busStopData = await busStopResponse.json();
 
-
     try {
-
         if (busStopData.length === 0)
             throw "No buses coming!!";
     }
     catch (err) {
         console.log(err);
     }
-
-
 
     // creates empty array for top 5 buses.
     var nextBus = [];
@@ -63,6 +58,7 @@ async function findNearestStops(requestPostCode) {
         }
         catch (err) {
             console.log(err);
+            console.log("Please enter a valid London post code: ")
         }
     } while (postCodeData.status === 404);
 
@@ -93,11 +89,11 @@ async function findNearestStops(requestPostCode) {
     for (let i = 0; i < 2; i++) {
         const busStop = radiusData.stopPoints[i].naptanId;
         const busStopName = radiusData.stopPoints[i].commonName;
-        getBusStopData(busStop, busStopName);
+        await getBusStopData(busStop, busStopName);
     }
     
     console.log('Getting to the bus stop:');
-    console.log(`Which bus stop do you want to go:Bus Stop ${radiusData.stopPoints[0].commonName} or ${radiusData.stopPoints[1].commonName}?`);
+    console.log(`Which bus stop do you want to go: Bus Stop 1 ${radiusData.stopPoints[0].commonName} or Bus Stop 2 ${radiusData.stopPoints[1].commonName}?`);
     let choice = readline.prompt();
     journeyPlanner(postCode, radiusData.stopPoints[choice - 1].naptanId);
 }
