@@ -1,0 +1,31 @@
+BUSBOARD NOTES:
+
+using real data
+
+API - Application Programming Interface.
+somebody has some data, and it is shared.
+making that data public.
+not all APIs are public.
+
+front end - the parts that the user sees
+back end - the more complicated bits
+
+send request to back end (one way to do that is an API)
+
+HTTP Requests
+makes sure that everyone is on same page in terms of communicating requests and data.
+There are lots of others.
+
+GET
+POST
+PUT
+DELETE
+PATCH, HEAD, OPTIONS, TRACE, CONNECT
+
+Amazon Prime Video
+Visa
+Nevata
+Device
+Zoopla
+Softwire
+
