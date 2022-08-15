@@ -57,7 +57,7 @@ async function findNearestStops(requestPostCode) {
     const latitude=postCodeData['result'].latitude;
     const longitude=postCodeData['result'].longitude;
 
-    const busRadiusSearchApi='https://api.tfl.gov.uk/StopPoint/?lat='+latitude+'&lon='+longitude+'&stopTypes=NaptanPublicBusCoachTram';
+    const busRadiusSearchApi = `https://api.tfl.gov.uk/StopPoint/?lat=${latitude}&lon=${longitude}&stopTypes=NaptanPublicBusCoachTram&radius=500`;
     const radiusResponse = await fetch(busRadiusSearchApi);
     const radiusData = await radiusResponse.json();
     //console.log(radiusData);
