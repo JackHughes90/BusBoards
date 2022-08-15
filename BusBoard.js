@@ -32,21 +32,27 @@ async function getBusStopData(stopCode,stopName) {
 
 async function findNearestStops(requestPostCode) {
     console.log(requestPostCode);
-    postCode = readline.prompt();
+    let postCode;
+    let postCodeResponse;
+    let postCodeData;
     
-    pcApiRequest = "https://api.postcodes.io/postcodes/"+postCode
-    //pcApiRequest = "https://api.postcodes.io/postcodes/N129HB"
-    
-    const postCodeResponse = await fetch(pcApiRequest);
-    const postCodeData = await postCodeResponse.json();
     //console.log(postCodeData);
 
-    try {
-        if (postCodeData.status === 404) throw "Invalid post code";
-    }
-    catch(err) {
-        console.log(err);
-    }
+    do
+    {
+        try {
+            postCode = readline.prompt();
+            pcApiRequest = "https://api.postcodes.io/postcodes/"+postCode
+            // pcApiRequest = "https://api.postcodes.io/postcodes/N129HB"
+            
+            postCodeResponse = await fetch(pcApiRequest);
+            postCodeData = await postCodeResponse.json();
+            if (postCodeData.status === 404) throw "Invalid post code";
+        }
+        catch(err) {
+            console.log(err);
+        }
+    } while (postCodeData.status === 404);
 
     const latitude=postCodeData['result'].latitude;
     const longitude=postCodeData['result'].longitude;
