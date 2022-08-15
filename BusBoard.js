@@ -10,29 +10,30 @@ async function getBusStopData(stopCode, stopName) {
     const busStopResponse = await fetch(apiRequest);
     const busStopData = await busStopResponse.json();
 
-    
-        try {
 
-            if (busStopData.length === 0)
-                throw "No buses coming!!";
-        }
-        catch (err) {
-            console.log(err);
-        }
-    
+    try {
+
+        if (busStopData.length === 0)
+            throw "No buses coming!!";
+    }
+    catch (err) {
+        console.log(err);
+    }
+
 
 
     // creates empty array for top 5 buses.
     var nextBus = [];
 
     nextBus[0] = stopName;
+    let compressedBusStopDate = busStopData.slice(0, 5);
 
     // finds first 5 entries on API and returns certain properties of the buses
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < compressedBusStopDate.length; i++) {
         let bus = {
             'busName': busStopData[i].lineName,
             'waitTime': busStopData[i].timeToStation,
-            'destination': busStopData[i].destionationName,
+            'destination': busStopData[i].destinationName,
             'route': busStopData[i].towards
         };
 
@@ -94,6 +95,11 @@ async function findNearestStops(requestPostCode) {
         const busStopName = radiusData.stopPoints[i].commonName;
         getBusStopData(busStop, busStopName);
     }
+    
+    console.log('Getting to the bus stop:');
+    console.log(`Which bus stop do you want to go:Bus Stop ${radiusData.stopPoints[0].commonName} or ${radiusData.stopPoints[1].commonName}?`);
+    let choice = readline.prompt();
+    journeyPlanner(postCode, radiusData.stopPoints[choice - 1].naptanId);
 }
 
 
@@ -101,7 +107,7 @@ async function findNearestStops(requestPostCode) {
 async function journeyPlanner(postCode, busStopCode) {
 
     // request API
-    const plannerResponse = await fetch('https://api.tfl.gov.uk/Journey/JourneyResults/n129hb/to/n129hj');
+    const plannerResponse = await fetch(`https://api.tfl.gov.uk/Journey/JourneyResults/${postCode}/to/${busStopCode}`);
     const plannerData = await plannerResponse.json();
 
     for (i = 0; i < plannerData.journeys[0].legs[0].instruction.steps.length; i++) {
