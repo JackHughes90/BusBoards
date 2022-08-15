@@ -36,9 +36,17 @@ async function findNearestStops(requestPostCode) {
     
     pcApiRequest = "https://api.postcodes.io/postcodes/"+postCode
     //pcApiRequest = "https://api.postcodes.io/postcodes/N129HB"
+    
     const postCodeResponse = await fetch(pcApiRequest);
     const postCodeData = await postCodeResponse.json();
     //console.log(postCodeData);
+
+    try {
+        if (postCodeData.status === 404) throw "Invalid post code";
+    }
+    catch(err) {
+        console.log(err);
+    }
 
     const latitude=postCodeData['result'].latitude;
     const longitude=postCodeData['result'].longitude;
@@ -57,7 +65,7 @@ async function findNearestStops(requestPostCode) {
 
 // a function to guide the user to the nearest bus stop.
 async function journeyPlanner(postCode, busStopCode) {
-
+    
     // request API
     const plannerResponse = await fetch('https://api.tfl.gov.uk/Journey/JourneyResults/n129hb/to/n129hj');
     const plannerData = await plannerResponse.json();
@@ -89,6 +97,7 @@ async function journeyPlanner(postCode, busStopCode) {
 //     }
 // }
 
-// findNearestStops('Enter the post code to be searched for:');
+findNearestStops('Enter the post code to be searched for:');
 
-journeyPlanner();
+//journeyPlanner();
+
